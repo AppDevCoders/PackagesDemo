@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packages Demo</title>
+    <meta name="description" content="Packages Demo">
+    <meta name="keywords" content="Packages,Vue,Vuex,Vuetify,Demo">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="./assets/favicon.png">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <!-- Material Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Vuetify 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <!-- App Styles -->
+    <link href="./styles.css" rel="stylesheet">
+</head>
+<body>
+    
+    <v-app id="app" class="bg-color">
+        
+        <!-- top menu -->
+        <v-app-bar app clipped-left dense color="green darken-4">           
+            <v-toolbar-title class="white--text">Send packages</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn text color="white accent-4" @click="openAlert()">
+                <v-icon class="mr-2">
+                    mdi-window-maximize
+                </v-icon>  
+                Alert
+            </v-btn>
+            <v-menu bottom left offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn dark icon v-bind="attrs" v-on="on" >
+                        <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item v-for="(option, i) in manuItems" :key="i" @click="menu(option)">
+                        <v-list-item-action>
+                            <v-icon>{{ option.icon }}</v-icon>
+                          </v-list-item-action>            
+                        <v-list-item-content>
+                            <v-list-item-title>{{ option.title }}</v-list-item-title>
+                        </v-list-item-content>                        
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </v-app-bar>
+
+        <!-- main -->
+        <v-main class="bg-color fill-height pt-10">
+            <v-container fluid class="pa-10">
+
+                <!-- alert -->
+                <v-alert
+                    v-model="alert" 
+                    elevation="2" 
+                    color="green" 
+                    border="left" 
+                    colored-border 
+                    icon="mdi-window-maximize"
+                    dismissible 
+                    >
+                    Alert demo. Please enter packages bellow!
+                </v-alert>
+
+                <!-- top section -->
+                <v-row gutters="1">
+
+                    <!-- images -->
+                    <v-col sm="5">
+                        <!-- <v-img                                
+                            max-height="100%"
+                            max-width="100%"
+                            src="./assets/pak1.png"
+                            class="images-max-height"
+                        ></v-img> -->
+                        <v-carousel :show-arrows="true" class="images-max-height">
+                            <v-carousel-item
+                              v-for="(img,i) in images"
+                              :key="i"
+                              :src="img.src"                              
+                            ></v-carousel-item>
+                        </v-carousel>
+                    </v-col>
+
+                    <!-- form -->
+                    <v-col sm="7">
+                        <v-card elevation="2" shaped title>
+                            <v-card-title>
+                                <span class="headline">New Package</span>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-container fluid class="pa-0">
+                                    <v-form ref="form" v-model="valid">
+                                        <v-container>
+                                            <v-row>
+                                              <v-col cols="12" md="8">
+                                                <v-text-field
+                                                  v-model="description"
+                                                  :rules="descriptionRules"                                                  
+                                                  label="Description"
+                                                  required
+                                                ></v-text-field>
+                                              </v-col>
+
+                                              <v-col cols="12" md="4" >
+                                                <v-text-field
+                                                  v-model="price"
+                                                  :rules="priceRules"
+                                                  label="Price"
+                                                  required
+                                                ></v-text-field>
+                                              </v-col>
+                                            </v-row>
+                                            <v-row>
+                                      
+                                              <v-col cols="6" md="3" >
+                                                <v-text-field
+                                                  v-model="length"
+                                                  :rules="lengthRules"
+                                                  label="Length"
+                                                  required
+                                                ></v-text-field>
+                                              </v-col>
+                                      
+                                              
+
+                                              <v-col cols="6" md="3" >
+                                                <v-text-field
+                                                  v-model="height"
+                                                  :rules="heightRules"
+                                                  label="Height"
+                                                  required
+                                                ></v-text-field>
+                                              </v-col>
+                                            
+                                                <v-col cols="6" md="3" >
+                                                  <v-text-field
+                                                    v-model="wide"
+                                                    :rules="wideRules"
+                                                    label="Wide"
+                                                    required
+                                                  ></v-text-field>
+                                                </v-col>
+
+                                                <v-col cols="6" md="3" >
+                                                    <v-text-field
+                                                      v-model="weight"
+                                                      :rules="weightRules"
+                                                      label="Weight"
+                                                      required
+                                                    ></v-text-field>
+                                                  </v-col>
+                                                                                                
+                                              </v-row>
+                                          </v-container>
+                                        </v-form>                                
+                                </v-container>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="green accent-4" @click="addPackage()" :disabled="!valid">
+                                        <v-icon class="mr-2">
+                                            mdi-archive-plus
+                                        </v-icon>  
+                                        Add Package
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+
+                </v-row>
+
+                <!-- table -->
+                <v-card elevation="2" class="mt-10">
+                    <v-card-title color="blue">
+                        <span class="headline">Your Order</span>
+                        <v-spacer></v-spacer>
+                        <span class="headline">Total Amount: {{ totalAmount }}</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-container fluid class="pa-0">
+    
+                            <template>
+                                <v-data-table dense
+                                    :headers="tableHeaders" :items="getPackages"
+                                    item-key="id" class="elevation-1"> <!-- hide-default-footer -->
+
+                                    <template v-slot:item.actions="{ item }">
+                                        <v-icon color="red" class="mr-2" @click="deleteDialog(item)" >
+                                            mdi-delete
+                                        </v-icon>       
+                                    </template>
+                                    
+                                    <template v-slot:no-data>
+                                        No hay data disponible.
+                                    </template>
+
+                                </v-data-table>
+                            </template>
+
+                        </v-container>
+                    </v-card-text>
+                </v-card>
+
+            </v-container>
+        </v-main>
+
+        <!-- snackbar -->
+        <v-snackbar v-model="snackbar" :timeout="8000" color="green darken-2">
+            {{ snackbarText }}
+            <template v-slot:action="{ attrs }">
+                <v-btn color="white" text v-bind="attrs" @click="snackbar = false" >
+                Close
+                </v-btn>
+            </template>
+        </v-snackbar>
+
+        <!-- dialog to confirm delete -->
+        <template>
+            <v-row justify="center">
+                <v-dialog v-model="dialog" persistent max-width="300" >
+                    <v-card>
+                        <v-card-title class="text-h5">
+                            Confirm delete
+                        </v-card-title>
+                        <v-card-text>
+                            Delete this package? <br />
+                            <v-chip class="my-2" color="yellow" text-color="black" label>
+                                <v-icon left>mdi-alert</v-icon>
+                                Action irreversible
+                            </v-chip>
+                            <br />
+                            <strong>Package description: <br />{{ deleteItem.description }}</strong>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="green darken-1" text @click="dialog = false">
+                                Cancel
+                            </v-btn>
+                            <v-btn color="red darken-1" text @click="deletePackage(deleteItem.id)">
+                                Delete
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-row>
+        </template>
+
+        <!-- spinner -->
+        <v-overlay :value="spinner">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+
+    </v-app>
+
+    <!-- Vue 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <!-- Vuex -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.1.1/vuex.min.js"></script>
+    <!-- Vuetify 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <!-- Axios -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script> -->
+    <!-- App -->
+    <script src="./utils.js"></script>
+    <script src="./package.model.js"></script>
+    <script src="./store.js"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
