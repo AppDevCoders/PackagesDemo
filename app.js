@@ -114,10 +114,10 @@ new Vue({
     ],
     // images
     images: [
-      { src: './assets/pak1.png', },
-      { src: './assets/pak2.jpg', },
-      { src: './assets/pak3.jpg', },
-      { src: './assets/pak4.png', },
+      { src: './assets/images/pak1.png', },
+      { src: './assets/images/pak2.jpg', },
+      { src: './assets/images/pak3.jpg', },
+      { src: './assets/images/pak4.png', },
     ],
   }),
 

@@ -8,7 +8,7 @@
     <meta name="description" content="Packages Demo">
     <meta name="keywords" content="Packages,Vue,Vuex,Vuetify,Demo">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="shortcut icon" href="./assets/favicon.png">
+    <link rel="shortcut icon" href="./assets/images/favicon.png">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <!-- Material Icons -->
@@ -16,7 +16,7 @@
     <!-- Vuetify 2 -->
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <!-- App Styles -->
-    <link href="./styles.css" rel="stylesheet">
+    <link href="./assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
     
@@ -24,7 +24,7 @@
         
         <!-- top menu -->
         <v-app-bar app clipped-left dense color="green darken-4">           
-            <v-toolbar-title class="white--text">Send packages</v-toolbar-title>
+            <v-toolbar-title class="white--text">Packages Demo</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn text color="white accent-4" @click="openAlert()">
                 <v-icon class="mr-2">
@@ -270,8 +270,8 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script> -->
     <!-- App -->
     <script src="./utils.js"></script>
-    <script src="./package.model.js"></script>
-    <script src="./store.js"></script>
+    <script src="./data/package.model.js"></script>
+    <script src="./data/store.js"></script>
     <script src="./app.js"></script>
 </body>
 </html>
