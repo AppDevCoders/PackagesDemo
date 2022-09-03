@@ -8,7 +8,7 @@ const pkgDemo1 = new Package({
   category: 'equipment',
   date: getDateString(),
   width: 20, 
-  height: 20, 
+  height: 22, 
   length: 10, 
   weight: 1, 
   price: 100,  
