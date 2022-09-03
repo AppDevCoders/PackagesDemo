@@ -6,28 +6,57 @@ new Vue({
   el: "#app",
   vuetify: new Vuetify(),
   store: store,
-  data: () => ({
-    // spinner
-    spinner: false,
+  data: () => ({    
     // menu
     manuItems: [
       { id: "menuSettings", title: "Settings", icon: 'mdi-cog' },
       { id: "menuProfile", title: "Profile", icon: 'mdi-account' },
       { id: "menuAbout", title: "About", icon: 'mdi-information' },
     ],
+    // images
+    images: [
+      { src: './assets/images/pak1.png', },
+      { src: './assets/images/pak2.jpg', },
+      { src: './assets/images/pak3.jpg', },
+      { src: './assets/images/pak4.png', },
+    ],
     // table headers
     tableHeaders: [
-      {
-        text: "ID",
-        align: "center",
-        sortable: true,
-        value: "id",
-      },
+      // {
+      //   text: "ID",
+      //   align: "center",
+      //   sortable: true,
+      //   value: "id",
+      // },
       {
         text: "Description",
         align: "center",
         sortable: true,
         value: "description",
+      },
+      {
+        text: "Category",
+        align: "center",
+        sortable: true,
+        value: "category",
+      },
+      {
+        text: "Date",
+        align: "center",
+        sortable: true,
+        value: "date",
+      },
+      {
+        text: "Width",
+        align: "center",
+        sortable: true,
+        value: "width",
+      },
+      {
+        text: "Height",
+        align: "center",
+        sortable: true,
+        value: "height",
       },
       {
         text: "Length",
@@ -40,13 +69,7 @@ new Vue({
         align: "center",
         sortable: true,
         value: "weight",
-      },
-      {
-        text: "Height",
-        align: "center",
-        sortable: true,
-        value: "height",
-      },
+      },      
       {
         text: "Price",
         align: "center",
@@ -54,7 +77,7 @@ new Vue({
         value: "price",
       },
       {
-        text: "Amount", // Virtual
+        text: "Amount", 
         align: "center",
         sortable: true,
         value: "amount",
@@ -66,15 +89,7 @@ new Vue({
         value: "actions",
       },
     ],
-    totalAmount: 0,
-    // snackbar related
-    snackbar: false,
-    snackbarText: "",
-    // dialog
-    deleteItem: {},
-    dialog: false,
-    // alert
-    alert: false,
+    totalAmount: 0,       
     // form 
     valid: false,
     description: '',
@@ -82,14 +97,24 @@ new Vue({
         v => !!v || 'Description is required',
         v => (v && v.length >= 5) || 'Description must be at less 5 characters',
     ],
+    category: '',
+    categoryRules: [
+      v => !!v || 'Required',      
+    ],
+    categories: [
+      "equipment", "electronic", "art", "material", "organic", "other"
+    ], 
+    datePicker1: false,
+    date: getDateString(),
+    dateFormatted: '',
     price: '',
     priceRules: [
-        v => !!v || 'Required',      
-        v => !isNaN(v) || 'Must be a number',
-        v => (v && +v > 0) || 'Must be positive',
+      v => !!v || 'Required',      
+      v => !isNaN(v) || 'Must be a number',
+      v => (v && +v > 0) || 'Must be positive',
     ],
-    length: '',
-    lengthRules: [
+    width: '',
+    widthRules: [
         v => !!v || 'Required',      
         v => !isNaN(v) || 'Must be a number',
         v => (v && +v > 0) || 'Must be positive',
@@ -100,11 +125,11 @@ new Vue({
         v => !isNaN(v) || 'Must be a number',
         v => (v && +v > 0) || 'Must be positive',
     ],
-    wide: '',
-    wideRules: [
-        v => !!v || 'Required',      
-        v => !isNaN(v) || 'Must be a number',
-        v => (v && +v > 0) || 'Must be positive',
+    length: '',
+    lengthRules: [
+      v => !!v || 'Required',      
+      v => !isNaN(v) || 'Must be a number',
+      v => (v && +v > 0) || 'Must be positive',
     ],
     weight: '',
     weightRules: [
@@ -112,13 +137,16 @@ new Vue({
         v => !isNaN(v) || 'Must be a number',
         v => (v && +v > 0) || 'Must be positive',
     ],
-    // images
-    images: [
-      { src: './assets/images/pak1.png', },
-      { src: './assets/images/pak2.jpg', },
-      { src: './assets/images/pak3.jpg', },
-      { src: './assets/images/pak4.png', },
-    ],
+    // snackbar related
+    snackbar: false,
+    snackbarText: "",
+    // dialog
+    deleteItem: {},
+    dialog: false,
+    // alert
+    alert: false,
+    // spinner
+    spinner: false,
   }),
 
   // Run at the start
@@ -137,6 +165,13 @@ new Vue({
     },
   },
 
+  // Observable
+  watch: {
+    date (val) {
+      this.dateFormatted = this.formatDate(this.date)
+    },
+  },
+
   // Methods
   methods: {
 
@@ -150,9 +185,12 @@ new Vue({
       console.log("add package");
       const package = new Package({
         description: this.description,
-        length: +this.length,
+        category: this.category,
+        date: this.date,
+        width: +this.width, 
+        height: +this.height, 
+        length: +this.length, 
         weight: +this.weight,
-        height: +this.height,
         price: +this.price,
       });
       this.$store.dispatch("addPackage", package);
@@ -194,6 +232,20 @@ new Vue({
     openAlert() {
         console.log("alert");
         this.alert = true;
+    },
+
+    // DD/MM/YYYY
+    formatDate (date) {
+      if (!date) return null
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
+    },
+
+    // DD/MM/YYYY -> YYYY/MM/DD
+    parseDate (date) {
+      if (!date) return null
+      const [day, month, year] = date.split('/')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     },
   },
 });

@@ -7,18 +7,22 @@ class Package {
         params = Object.assign({
             id: Date.now(), 
             description: '', 
-            length: 0, 
+            date: getDateString(),
+            category: 'equipment',
+            width: 0, 
             height: 0, 
-            wide: 0, 
+            length: 0, 
             weight: 0, 
             price: 0,
             amount: 0
         }, params);
         this.id = params.id;
         this.description = params.description;
-        this.length = params.length;
-        this.height = params.height;
-        this.wide = params.wide;        
+        this.date = params.date;
+        this.category = params.category;
+        this.width = params.width;   
+        this.height = params.height; 
+        this.length = params.length; 
         this.weight = params.weight;        
         this.price = params.price;        
         // this.amount = params.amount; 

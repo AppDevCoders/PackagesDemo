@@ -5,9 +5,11 @@
 const pkgDemo1 = new Package({ 
   // id: Date.now(), 
   description: 'Demo package', 
-  length: 10, 
+  category: 'equipment',
+  date: getDateString(),
+  width: 20, 
   height: 20, 
-  wide: 20, 
+  length: 10, 
   weight: 1, 
   price: 100,  
   // amount: 0

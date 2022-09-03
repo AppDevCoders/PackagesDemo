@@ -79,7 +79,7 @@
                             src="./assets/pak1.png"
                             class="images-max-height"
                         ></v-img> -->
-                        <v-carousel :show-arrows="true" class="images-max-height">
+                        <v-carousel :show-arrows="true" class="images-max-height" cycle>
                             <v-carousel-item
                               v-for="(img,i) in images"
                               :key="i"
@@ -90,87 +90,127 @@
 
                     <!-- form -->
                     <v-col sm="7">
-                        <v-card elevation="2" shaped title>
+                        <v-card elevation="2" title>
                             <v-card-title>
                                 <span class="headline">New Package</span>
                             </v-card-title>
-                            <v-card-text>
+                            <v-divider></v-divider>
+                            <v-card-text class="py-0">
                                 <v-container fluid class="pa-0">
                                     <v-form ref="form" v-model="valid">
                                         <v-container>
+                                            
                                             <v-row>
-                                              <v-col cols="12" md="8">
+                                                <v-col cols="12" md="8">
                                                 <v-text-field
-                                                  v-model="description"
-                                                  :rules="descriptionRules"                                                  
-                                                  label="Description"
-                                                  required
+                                                    v-model="description"
+                                                    :rules="descriptionRules"                                                  
+                                                    label="Description"
+                                                    required
                                                 ></v-text-field>
-                                              </v-col>
+                                                </v-col>
 
-                                              <v-col cols="12" md="4" >
+                                                <v-col cols="12" md="4" >
                                                 <v-text-field
-                                                  v-model="price"
-                                                  :rules="priceRules"
-                                                  label="Price"
-                                                  required
+                                                    v-model="price"
+                                                    :rules="priceRules"
+                                                    label="Price"
+                                                    required
                                                 ></v-text-field>
-                                              </v-col>
+                                                </v-col>
                                             </v-row>
+                                            
                                             <v-row>
-                                      
-                                              <v-col cols="6" md="3" >
-                                                <v-text-field
-                                                  v-model="length"
-                                                  :rules="lengthRules"
-                                                  label="Length"
-                                                  required
-                                                ></v-text-field>
-                                              </v-col>
-                                      
-                                              
-
-                                              <v-col cols="6" md="3" >
-                                                <v-text-field
-                                                  v-model="height"
-                                                  :rules="heightRules"
-                                                  label="Height"
-                                                  required
-                                                ></v-text-field>
-                                              </v-col>
+                                                <v-col cols="12" lg="6">
+                                                    <v-select
+                                                        v-model="category"
+                                                        :items="categories"                                                    
+                                                        label="Category"
+                                                    ></v-select>                                                    
+                                                </v-col>
+                                                <v-col cols="12" lg="6">
+                                                    <v-menu
+                                                        ref="datePicker1"
+                                                        v-model="datePicker1"
+                                                        :close-on-content-click="false"
+                                                        transition="scale-transition"
+                                                        offset-y
+                                                        max-width="290px"
+                                                        min-width="auto"
+                                                        >
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-text-field
+                                                        v-model="dateFormatted"
+                                                        label="Date (DD/MM/YYYY format)"                        
+                                                        prepend-icon="mdi-calendar"
+                                                        v-bind="attrs"
+                                                        @blur="date = parseDate(dateFormatted)"
+                                                        v-on="on"
+                                                        ></v-text-field>
+                                                    </template>
+                                                    <v-date-picker
+                                                        v-model="date"
+                                                        no-title
+                                                        @input="datePicker1 = false"
+                                                    ></v-date-picker>
+                                                    </v-menu>
+                                                </v-col>
+                                            </v-row>
+                                            
+                                            <v-row>                                                                                    
                                             
                                                 <v-col cols="6" md="3" >
-                                                  <v-text-field
-                                                    v-model="wide"
-                                                    :rules="wideRules"
-                                                    label="Wide"
+                                                    <v-text-field
+                                                    v-model="width"
+                                                    :rules="widthRules"
+                                                    label="Width"
                                                     required
-                                                  ></v-text-field>
+                                                    ></v-text-field>
                                                 </v-col>
 
                                                 <v-col cols="6" md="3" >
                                                     <v-text-field
-                                                      v-model="weight"
-                                                      :rules="weightRules"
-                                                      label="Weight"
-                                                      required
+                                                    v-model="height"
+                                                    :rules="heightRules"
+                                                    label="Height"
+                                                    required
                                                     ></v-text-field>
-                                                  </v-col>
+                                                </v-col>
+
+                                                <v-col cols="6" md="3" >
+                                                    <v-text-field
+                                                        v-model="length"
+                                                        :rules="lengthRules"
+                                                        label="Length"
+                                                        required
+                                                    ></v-text-field>
+                                                </v-col>
+
+                                                <v-col cols="6" md="3" >
+                                                    <v-text-field
+                                                        v-model="weight"
+                                                        :rules="weightRules"
+                                                        label="Weight"
+                                                        required
+                                                    ></v-text-field>
+                                                </v-col>
                                                                                                 
-                                              </v-row>
-                                          </v-container>
+                                            </v-row>
+
+                                            </v-container>
                                         </v-form>                                
-                                </v-container>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="green accent-4" @click="addPackage()" :disabled="!valid">
-                                        <v-icon class="mr-2">
-                                            mdi-archive-plus
-                                        </v-icon>  
-                                        Add Package
-                                    </v-btn>
-                                </v-card-actions>
-                            </v-card-text>
+                                </v-container>     
+                            </v-card-text>                        
+                            <v-divider></v-divider>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="green accent-4" @click="addPackage()" :disabled="!valid">
+                                    <v-icon class="mr-2">
+                                        mdi-archive-plus
+                                    </v-icon>  
+                                    Add Package
+                                </v-btn>
+                            </v-card-actions>
                         </v-card>
                     </v-col>
 
