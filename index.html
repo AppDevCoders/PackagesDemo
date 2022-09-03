@@ -124,7 +124,8 @@
                                                 <v-col cols="12" md="6">
                                                     <v-select
                                                         v-model="category"
-                                                        :items="categories"                                                    
+                                                        :items="categories"    
+                                                        :rules="categoryRules"                                                  
                                                         label="Category"
                                                     ></v-select>                                                    
                                                 </v-col>
@@ -146,6 +147,7 @@
                                                         v-bind="attrs"
                                                         @blur="date = parseDate(dateFormatted)"
                                                         v-on="on"
+                                                        :rules="dateRules"       
                                                         ></v-text-field>
                                                     </template>
                                                     <v-date-picker
@@ -154,7 +156,7 @@
                                                         @input="datePicker1 = false"
                                                     ></v-date-picker>
                                                     </v-menu>
-                                                </v-col>
+                                                </v-col>       
                                             </v-row>
                                             
                                             <v-row>                                                                                    

@@ -100,13 +100,18 @@ new Vue({
     category: '',
     categoryRules: [
       v => !!v || 'Required',      
+      v => (v && v.length > 0) || 'Required',
     ],
     categories: [
       "equipment", "electronic", "art", "material", "organic", "other"
     ], 
     datePicker1: false,
-    date: getDateString(),
+    date: '', 
     dateFormatted: '',
+    dateRules: [
+      v => !!v || 'Required',      
+      v => (v && v.length === 10) || 'Enter a date',
+    ],
     price: '',
     priceRules: [
       v => !!v || 'Required',      
